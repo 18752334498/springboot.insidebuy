@@ -1,0 +1,2 @@
+#没有此配置，在APP启动的时候，在事件监听里面是找不到DemoBean，因为APP扫描的是com.yucong包
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.yucong.autoconfig.demo.DemoBeanAutoConfiguration
