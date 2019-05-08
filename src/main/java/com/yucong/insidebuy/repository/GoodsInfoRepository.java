@@ -1,5 +1,7 @@
 package com.yucong.insidebuy.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +36,17 @@ public interface GoodsInfoRepository extends JpaRepository<GoodsInfo, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "update vwt_ins_goods_info i set i.limit_count = null")
     int modifyLimitCountToNull();
+
+    @Query("select g from GoodsInfo g where g.id in (:ids)")
+    List<GoodsInfo> findByids(@Param("ids") List<Long> ids);
+
+    @Query("select count(g) from GoodsInfo g where g.id > :num")
+    int findByidRange(@Param("num") Long num);
+
+    @Query(nativeQuery = true, value = "select i.id from vwt_ins_goods_info i where i.goods_type_id = :goodsTypeId")
+    List<Long> findGoodsInfoIdsBygoodsTypeId(@Param("goodsTypeId") Long goodsTypeId);
+
+    @Query("select g from GoodsInfo g where g.id = :goodsTypeId and g.status = '1'")
+    public GoodsInfo judgeStatusByGoodsInfoId(@Param("goodsTypeId") Long goodsTypeId);
+
 }

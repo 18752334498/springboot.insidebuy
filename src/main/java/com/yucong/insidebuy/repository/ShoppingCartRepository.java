@@ -30,4 +30,9 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
     @Modifying
     @Query("delete from ShoppingCart cart where cart.id in (:ids)")
     public int deleteShoppingCartByIds(@Param("ids") List<Long> ids);
+
+
+    @Modifying
+    @Query("delete from ShoppingCart cart where cart.goodsInfo.id = :goodsInfoId")
+    public int deleteShoppingCartByGoodsInfoId(@Param("goodsInfoId") Long goodsInfoId);
 }

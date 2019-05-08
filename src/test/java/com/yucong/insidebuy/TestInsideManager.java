@@ -31,6 +31,7 @@ import com.yucong.insidebuy.repository.ActivityRepository;
 import com.yucong.insidebuy.repository.GoodsInfoRepository;
 import com.yucong.insidebuy.repository.GoodsModelRepository;
 import com.yucong.insidebuy.repository.OrderRepository;
+import com.yucong.insidebuy.repository.ShoppingCartRepository;
 import com.yucong.insidebuy.repository.TypeRepository;
 import com.yucong.insidebuy.service.GoodsInfoService;
 import com.yucong.insidebuy.service.OrderService;
@@ -53,6 +54,8 @@ public class TestInsideManager {
     private OrderRepository orderRepository;
     @Autowired
     private GoodsModelRepository goodsModelRepository;
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
 
     @Test
     public void test_finfAllForManager() {
@@ -268,5 +271,54 @@ public class TestInsideManager {
         int count = goodsInfoRepository.modifyLimitCountToNull();
         System.out.println("修改了：" + count);
     }
+
+    @Test
+    public void test_findByids() {
+        List<Long> asList = new ArrayList<>();
+        asList.add(1l);
+        asList.add(2l);
+        asList.add(3l);
+        List<GoodsInfo> list = goodsInfoRepository.findByids(asList);
+        System.out.println(JSON.toJSONString(list, SerializerFeature.PrettyFormat));
+    }
+
+    @Test
+    public void test_findByidRange() {
+        int count = goodsInfoRepository.findByidRange(4l);
+        System.out.println(count);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void test_deleteShoppingCartByGoodsInfoId() {
+        int count = shoppingCartRepository.deleteShoppingCartByGoodsInfoId(1l);
+        System.out.println(count);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void test_deleteOrderByGoodsInfoId() {
+        int count = orderRepository.deleteOrderByGoodsInfoId(1l);
+        System.out.println(count);
+    }
+
+    @Test
+    public void test_findGoodsInfoIdsBygoodsTypeId() {
+        List<Long> ids = goodsInfoRepository.findGoodsInfoIdsBygoodsTypeId(2l);
+        System.out.println(ids);
+    }
+
+    @Test
+    public void test_judgeStatusByGoodsInfoId() {
+        GoodsInfo goodsInfo = goodsInfoRepository.judgeStatusByGoodsInfoId(3l);
+        if (goodsInfo == null) {
+            System.out.println("aaaaa");
+        } else {
+            System.out.println(JSON.toJSONString(goodsInfo));
+        }
+    }
+
 
 }
